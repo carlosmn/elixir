@@ -634,7 +634,12 @@ defmodule File do
 
   """
   def rmdir(path) do
-    F.del_dir(path)
+    case F.del_dir(path) do
+      { :error, :eexist } ->
+        { :error, :enotempty }
+      other ->
+        other
+    end
   end
 
   @doc """
